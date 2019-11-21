@@ -1,0 +1,7 @@
+apiVersion: app.themis.io/v1alpha1
+kind: ReplicaSet
+metadata:
+  name: example-replicaset
+spec:
+  # Add fields here
+  size: 3
