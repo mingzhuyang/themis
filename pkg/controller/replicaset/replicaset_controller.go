@@ -2,10 +2,8 @@ package replicaset
 
 import (
 	"context"
-	v1 "k8s.io/api/apps/v1"
 
 	appv1alpha1 "github.com/mingzhuyang/themis/pkg/apis/app/v1alpha1"
-	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -36,26 +34,7 @@ func Add(mgr manager.Manager) error {
 }
 
 // newReconciler returns a new reconcile.Reconciler
-func newReconciler(mgr manager.Manager) (reconcile.Reconciler,error) {
-	cacher := mgr.GetCache()
-	replicaSetInformer,err := cacher.GetInformerForKind(controllerKind)
-	if err != nil{
-		return nil,err
-	}
-	podInformer,err := cacher.GetInformerForKind(v1.SchemeGroupVersion.WithKind("Pod"))
-	if err != nil{
-		return nil,err
-	}
-	pvcInformer,err := cacher.GetInformerForKind(v1.SchemeGroupVersion.WithKind("PersistentVolumeClaim"))
-	if err != nil{
-		return nil,err
-	}
-	revInformer,err := cacher.GetInformerForKind(appsv1.SchemeGroupVersion.WithKind("ControllerRevision"))
-	if err != nil{
-		return nil,err
-	}
-
-	replicaSetLister :=
+func newReconciler(mgr manager.Manager) (reconcile.Reconciler) {
 	return &ReconcileReplicaSet{client: mgr.GetClient(), scheme: mgr.GetScheme()}
 }
 
@@ -172,8 +151,4 @@ func newPodForCR(cr *appv1alpha1.ReplicaSet) *corev1.Pod {
 			},
 		},
 	}
-}
-
-func (r *ReconcileReplicaSet)syncReplicaSet(request reconcile.Request) error{
-
 }
